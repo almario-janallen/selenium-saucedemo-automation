@@ -1,7 +1,7 @@
 # Selenium SauceDemo Automation
 
 This project contains automated test scripts for [SauceDemo](https://www.saucedemo.com/) using **Selenium WebDriver**, **Java**, and **TestNG**.  
-The goal is to demonstrate end-to-end testing of an e-commerce workflow — from login to checkout — using clean automation practices.
+The goal is to demonstrate end-to-end testing of an e-commerce workflow — from login to check out — using clean automation practices.
 
 ## 🚀 Features
 - **Login Tests**: Valid/invalid credentials, locked-out users.
@@ -18,13 +18,19 @@ The goal is to demonstrate end-to-end testing of an e-commerce workflow — from
 - **Maven** (for dependencies and build)
 
 ## 📂 Project Structure
+```markdown
 src/
-├── pages/ # Page Object classes (LoginPage, CartPage, CheckoutPage)
-├── tests/ # Test classes grouped by feature (LoginTests, CartTests, CheckoutTests, E2E)
-├── utils/ # Helpers (WebDriverFactory, Waits, Logger)
-└── resources/ # Config files (test data, properties)
-
-
+├── main/
+│    └── java/
+│         ├── pages/       # Page Object classes (e.g., LoginPage)
+│         └── utils/       # Helper classes (WebDriverFactory, ExcelUtil, etc.)
+└── test/
+     ├── java/
+     │     ├── listeners/   # TestNG listeners (TestListener)
+     │     └── tests/       # Test classes (LoginTest)
+     └── resources/         # Test data files (Excel, CSV)
+           └──testdata/
+```
 ## ▶️ Running Tests
 1. Clone the repo:
    ```bash
