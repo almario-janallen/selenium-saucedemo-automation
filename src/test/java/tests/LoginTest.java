@@ -15,8 +15,8 @@ public class LoginTest extends BaseTest {
 
     @DataProvider(name = "excelData")
     public Object[][] getExcelData() {
-        String filePath = "src/test/resources/testdata/LoginData.xlsx";
-        return ExcelUtils.getExcelData(filePath,"Sheet1");
+        String filePath = "src/test/resources/testdata/SauceDemoTestData.xlsx";
+        return ExcelUtils.getExcelData(filePath,"LoginData");
     }
 
     @Test(dataProvider = "excelData")
