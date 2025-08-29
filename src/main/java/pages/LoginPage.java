@@ -35,6 +35,10 @@ public class LoginPage {
         clickLoginButton();
     }
 
+    public boolean isOnLoginPage() {
+        return driver.getCurrentUrl().equals("https://www.saucedemo.com/") && driver.findElement(By.className("login_container")).isDisplayed();
+    }
+
     public String getErrorMessage() {
         return driver.findElement(By.cssSelector("h3[data-test='error']")).getText();
     }

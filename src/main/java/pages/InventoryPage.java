@@ -1,10 +1,16 @@
 package pages;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class InventoryPage {
     private final WebDriver driver;
+    private final WebDriverWait wait;
 
     //static locators
     private final By header = By.className("title");
@@ -13,6 +19,7 @@ public class InventoryPage {
     //constructor
     public InventoryPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     public String getHeaderText() {
@@ -20,9 +27,9 @@ public class InventoryPage {
     }
 
     public boolean isOnInventoryPage() {
-        return driver.getCurrentUrl().contains("inventory.html");
+//        return driver.getCurrentUrl().contains("inventory.html") && driver.findElement(By.id("inventory_container")).isDisplayed();
+        return wait.until(ExpectedConditions.urlContains("inventory.html")) && driver.findElement(By.id("inventory_container")).isDisplayed();
     }
-
 
     private By productName(String itemName) {
         return By.xpath("//div[@class='inventory_item_name' and text()='" + itemName + "']");
