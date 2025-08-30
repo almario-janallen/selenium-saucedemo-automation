@@ -3,10 +3,13 @@ package pages;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InventoryPage {
     private final WebDriver driver;
@@ -66,5 +69,16 @@ public class InventoryPage {
 
     public void goToShoppingCart() {
         driver.findElement(shoppingCartLink).click();
+    }
+
+    private final By inventoryNames = By.className("inventory_item_name");
+
+    public List<String> getInventoryItems() {
+        List<WebElement> items = driver.findElements(inventoryNames);
+        List<String> itemNames = new ArrayList<>();
+        for(WebElement item : items) {
+            itemNames.add(item.getText().trim());
+        }
+        return itemNames;
     }
 }
