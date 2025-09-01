@@ -1,6 +1,5 @@
 package pages;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,20 +34,24 @@ public class InventoryPage {
     }
 
     private By productName(String itemName) {
-        return By.xpath("//div[@class='inventory_item_name' and text()='" + itemName + "']");
+        return By.xpath("//div[contains(@class,'inventory_item_name') and text()='" + itemName + "']");
     }
 
     private By productPrice(String itemName) {
-        return By.xpath("//div[text()='" + itemName + "']/ancestor::div[@class='inventory_item']//div[@class='inventory_item_price']");
+        return By.xpath("//div[contains(@class,'inventory_item_name') and normalize-space(text())='"
+                + itemName + "']/ancestor::div[@class='inventory_item']//div[@class='inventory_item_price']");
     }
 
     private By productDescription(String itemName) {
-        return By.xpath("//div[text()='" + itemName + "']/ancestor::div[@class='inventory_item']//div[@class='inventory_item_desc']");
+        return By.xpath("//div[contains(@class,'inventory_item_name') and normalize-space(text())='"
+                + itemName + "']/ancestor::div[@class='inventory_item']//div[@class='inventory_item_desc']");
     }
 
     private By addToCartButton(String itemName) {
-        return By.xpath("//div[text()='" + itemName + "']/ancestor::div[@class='inventory_item']//button");
+        return By.xpath("//div[contains(@class,'inventory_item_name') and normalize-space(text())='"
+                + itemName + "']/ancestor::div[@class='inventory_item']//button");
     }
+
 
     // 🔹 Methods that accept dynamic itemName (manual or Excel-driven)
     public String getInventoryName(String itemName) {
@@ -80,5 +83,9 @@ public class InventoryPage {
             itemNames.add(item.getText().trim());
         }
         return itemNames;
+    }
+
+    public void goToProduct(String itemName) {
+        driver.findElement(productName(itemName)).click();
     }
 }
