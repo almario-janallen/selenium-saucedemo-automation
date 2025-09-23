@@ -7,15 +7,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCartPage {
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    private By cartItems = By.className("cart_item");
-    private By itemName = By.className("inventory_item_name");
-    private By removeButton = By.tagName("btn btn_secondary btn_small cart_button");
+    private final By cartItems = By.className("cart_item");
+    private final By itemName = By.className("inventory_item_name");
+    private final By checkoutButton = By.id("checkout");
 
     // Constructor
     public ShoppingCartPage(WebDriver driver) {
@@ -46,14 +47,19 @@ public class ShoppingCartPage {
         driver.findElement(By.id(removeId)).click();
     }
 
-    //Static Locators
-    private final By checkoutButton = By.id("checkout");
-
     public void clickCheckoutButton() {
         try{
             driver.findElement(checkoutButton).click();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int getShoppingCartCount() {
+        List<WebElement> items = driver.findElements(cartItems);
+        if(items.isEmpty()){
+            return 0;
+        }
+        return items.size();
     }
 }
