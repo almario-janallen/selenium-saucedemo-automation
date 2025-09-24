@@ -3,10 +3,10 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
 
-public class CheckoutStepOnePage {
+public class CheckoutInformationPage {
     private final WebDriver driver;
 
-    public CheckoutStepOnePage(WebDriver driver) {
+    public CheckoutInformationPage(WebDriver driver) {
         this.driver = driver;
     }
 

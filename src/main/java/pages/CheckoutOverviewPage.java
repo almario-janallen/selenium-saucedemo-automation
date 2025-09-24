@@ -2,14 +2,14 @@ package pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
-public class CheckoutStepTwoPage {
+public class CheckoutOverviewPage {
     private final WebDriver driver;
 
     //static locators
     private final By header = By.className("title");
     private final By finishButton = By.id("finish");
 
-    public CheckoutStepTwoPage(WebDriver driver) {
+    public CheckoutOverviewPage(WebDriver driver) {
         this.driver = driver;
     }
 

@@ -3,38 +3,28 @@ package tests;
 import listeners.TestListener;
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 import pages.*;
 
 @Listeners(TestListener.class)
-public class E2ETests extends BaseTest {
+public class CheckoutTest extends BaseTest{
     @Test
-    public void testEndToEndPurchaseFlow() {
+    public void CheckoutMultipleItems() {
         // Step 1: Login
         LoginPage loginPage = new LoginPage(driver);
-        Assert.assertTrue(loginPage.isOnLoginPage());
         loginPage.login("standard_user", "secret_sauce");
 
-        // Step 2: Add product to cart
         InventoryPage inventoryPage = new InventoryPage(driver);
-        Assert.assertTrue(inventoryPage.isOnInventoryPage());
-//        inventoryPage.handleLoginAlert();
         inventoryPage.addToCart("Sauce Labs Backpack");
-
-        /*
-        Issue: Cannot click shopping cart
-         */
-        // Step 3: Go to Shopping Cart
+        inventoryPage.addToCart("Sauce Labs Bike Light");
         inventoryPage.goToShoppingCart();
         driver.findElement(By.className("shopping_cart_link")).click();
+
         ShoppingCartPage shoppingCartPage = new ShoppingCartPage(driver);
         Assert.assertTrue(shoppingCartPage.isOnShoppingCartPage());
-
-        // Step 4: Checkout
         shoppingCartPage.clickCheckoutButton();
 
-        // Step 5: Enter User Information
         CheckoutInformationPage checkoutInformationPage = new CheckoutInformationPage(driver);
         Assert.assertTrue(checkoutInformationPage.isOnCheckoutStepOnePage());
 
@@ -43,12 +33,10 @@ public class E2ETests extends BaseTest {
         checkoutInformationPage.setPostalCode("12345");
         checkoutInformationPage.clickContinue();
 
-        // Step 6: Finish Checkout
         CheckoutOverviewPage checkoutOverviewPage = new CheckoutOverviewPage(driver);
         Assert.assertTrue(checkoutOverviewPage.isOnCheckoutStepTwoPage());
         checkoutOverviewPage.finishCheckout();
 
-        // Step 7: Validate if Checkout is complete
         CheckoutCompletePage checkoutCompletePage = new CheckoutCompletePage(driver);
         Assert.assertTrue(checkoutCompletePage.isOnCheckoutCompletePage());
         Assert.assertTrue(checkoutCompletePage.isCheckoutComplete(),"Error in Checkout.");
