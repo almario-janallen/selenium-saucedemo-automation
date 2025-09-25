@@ -21,24 +21,25 @@ public class CheckoutInformationPage {
     private final By lastNameField = By.id("last-name");
     private final By postalCodeField = By.id("postal-code");
     private final By continueButton = By.id("continue");
+    private final By errorMessage = By.cssSelector("h3[data-test='error']");
 
-    public void setFirstName(String firstName) {
+
+    public void fillCheckoutInformation(String firstName, String lastName, String postalCode){
         driver.findElement(firstNameField).sendKeys(firstName);
-    }
-
-    public void setLastName(String lastName) {
         driver.findElement(lastNameField).sendKeys(lastName);
-    }
-
-    public void setPostalCode(String postalCode) {
         driver.findElement(postalCodeField).sendKeys(postalCode);
     }
 
-    public  void clickContinue() {
+
+    public  void finishCheckout() {
         driver.findElement(continueButton).click();
     }
 
-    public boolean isOnCheckoutStepOnePage() {
+    public boolean isOnCheckoutInformationPage() {
         return driver.findElement(header).isDisplayed() && getHeaderText().equals("Checkout: Your Information");
+    }
+
+    public String getErrorMessage() {
+        return driver.findElement(errorMessage).getText().trim();
     }
 }

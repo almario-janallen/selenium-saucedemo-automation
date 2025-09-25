@@ -8,6 +8,7 @@ public class CheckoutOverviewPage {
     //static locators
     private final By header = By.className("title");
     private final By finishButton = By.id("finish");
+    private final By subtotal = By.className("summary_subtotal_label");
 
     public CheckoutOverviewPage(WebDriver driver) {
         this.driver = driver;
@@ -17,16 +18,30 @@ public class CheckoutOverviewPage {
         return driver.findElement(header).getText();
     }
 
-    private By productName(String productName) {
-        return By.xpath("//div[@class='inventory_item_name' and text() =' "+productName+"']");
+    private By productNameLocator(String productName) {
+        return By.xpath("//div[@class='inventory_item_name' and text() ='"+productName+"']");
     }
 
-    private By productPrice(String itemName) {
-        return By.xpath("//div[text()='" + itemName + "']/ancestor::div[@class='inventory_item']//div[@class='inventory_item_price']");
+    private By productPriceLocator(String productName) {
+        return By.xpath("//div[text()='" + productName + "']/ancestor::div[@class='cart_item_label']//div[@class='inventory_item_price']");
     }
 
-    public boolean isOnCheckoutStepTwoPage() {
+    public boolean isOnCheckoutOverviewPage() {
         return driver.findElement(finishButton).isDisplayed() && getHeaderText().equals("Checkout: Overview");
+    }
+
+    public double getItemPrice(String itemName) {
+        String itemPrice = driver.findElement(productPriceLocator(itemName)).getText();
+        return Double.parseDouble(itemPrice.replace("$","").trim());
+    }
+
+    public boolean isItemInCheckoutOverviewPage(String itemName){
+        return driver.findElement(productNameLocator(itemName)).isDisplayed();
+    }
+
+    public double getItemTotal() {
+        String totalText = driver.findElement(subtotal).getText();
+        return Double.parseDouble(totalText.replace("Item total: $", "").trim());
     }
 
     public void finishCheckout() {

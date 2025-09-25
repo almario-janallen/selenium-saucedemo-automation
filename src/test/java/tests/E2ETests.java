@@ -26,8 +26,8 @@ public class E2ETests extends BaseTest {
         Issue: Cannot click shopping cart
          */
         // Step 3: Go to Shopping Cart
-        inventoryPage.goToShoppingCart();
         driver.findElement(By.className("shopping_cart_link")).click();
+        inventoryPage.goToShoppingCart();
         ShoppingCartPage shoppingCartPage = new ShoppingCartPage(driver);
         Assert.assertTrue(shoppingCartPage.isOnShoppingCartPage());
 
@@ -36,16 +36,14 @@ public class E2ETests extends BaseTest {
 
         // Step 5: Enter User Information
         CheckoutInformationPage checkoutInformationPage = new CheckoutInformationPage(driver);
-        Assert.assertTrue(checkoutInformationPage.isOnCheckoutStepOnePage());
+        Assert.assertTrue(checkoutInformationPage.isOnCheckoutInformationPage());
 
-        checkoutInformationPage.setFirstName("FirstName");
-        checkoutInformationPage.setLastName("LastName");
-        checkoutInformationPage.setPostalCode("12345");
-        checkoutInformationPage.clickContinue();
+        checkoutInformationPage.fillCheckoutInformation("FirstName","LastName","12345");
+        checkoutInformationPage.finishCheckout();
 
         // Step 6: Finish Checkout
         CheckoutOverviewPage checkoutOverviewPage = new CheckoutOverviewPage(driver);
-        Assert.assertTrue(checkoutOverviewPage.isOnCheckoutStepTwoPage());
+        Assert.assertTrue(checkoutOverviewPage.isOnCheckoutOverviewPage());
         checkoutOverviewPage.finishCheckout();
 
         // Step 7: Validate if Checkout is complete
