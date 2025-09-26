@@ -13,12 +13,6 @@ import pages.ShoppingCartPage;
 @Listeners(TestListener.class)
 public class CartTest extends BaseTest{
 
-    @BeforeMethod
-    public void loginAndGoToProducts() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("standard_user","secret_sauce");
-    }
-
     @Test
     public void testAddSingleItemToCart() {
         InventoryPage inventoryPage = new InventoryPage(driver);

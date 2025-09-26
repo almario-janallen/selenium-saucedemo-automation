@@ -11,15 +11,8 @@ import pages.*;
 public class E2ETests extends BaseTest {
     @Test
     public void testEndToEndPurchaseFlow() {
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        Assert.assertTrue(loginPage.isOnLoginPage());
-        loginPage.login("standard_user", "secret_sauce");
-
-        // Step 2: Add product to cart
         InventoryPage inventoryPage = new InventoryPage(driver);
         Assert.assertTrue(inventoryPage.isOnInventoryPage());
-//        inventoryPage.handleLoginAlert();
         inventoryPage.addToCart("Sauce Labs Backpack");
 
         /*

@@ -27,9 +27,7 @@ public class InventoryTest extends BaseTest {
 
     @Test(dataProvider = "excelData")
     public void verifyInventory(String itemName, double price, String description) {
-        // Login to page
-        loginPage = new LoginPage(driver);
-        loginPage.login("standard_user", "secret_sauce");
+
         inventoryPage = new InventoryPage(driver);
         List<String> itemsInInventory = inventoryPage.getInventoryItems(); //gets items in webpage
 

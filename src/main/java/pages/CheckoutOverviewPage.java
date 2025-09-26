@@ -9,6 +9,8 @@ public class CheckoutOverviewPage {
     private final By header = By.className("title");
     private final By finishButton = By.id("finish");
     private final By subtotal = By.className("summary_subtotal_label");
+    private final By tax = By.className("summary_tax_label");
+    private final By total = By.className("summary_total_label");
 
     public CheckoutOverviewPage(WebDriver driver) {
         this.driver = driver;
@@ -39,9 +41,19 @@ public class CheckoutOverviewPage {
         return driver.findElement(productNameLocator(itemName)).isDisplayed();
     }
 
+    public double getItemSubTotal() {
+        String subtotalText = driver.findElement(subtotal).getText();
+        return Double.parseDouble(subtotalText.replace("Item total: $", "").trim());
+    }
+
+    public double getTax() {
+        String taxText = driver.findElement(tax).getText();
+        return Double.parseDouble(taxText.replace("Tax: $", "").trim());
+    }
+
     public double getItemTotal() {
-        String totalText = driver.findElement(subtotal).getText();
-        return Double.parseDouble(totalText.replace("Item total: $", "").trim());
+        String totalText = driver.findElement(total).getText();
+        return Double.parseDouble(totalText.replace("Total: $", "").trim());
     }
 
     public void finishCheckout() {

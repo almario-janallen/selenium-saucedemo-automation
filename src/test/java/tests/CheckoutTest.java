@@ -13,9 +13,6 @@ public class CheckoutTest extends BaseTest{
 
     @BeforeMethod
     public void loginAndAddItems(){
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("standard_user", "secret_sauce");
-
         InventoryPage inventoryPage = new InventoryPage(driver);
         inventoryPage.addToCart("Sauce Labs Backpack");
         inventoryPage.addToCart("Sauce Labs Bike Light");
@@ -106,8 +103,12 @@ public class CheckoutTest extends BaseTest{
         checkout.isItemInCheckoutOverviewPage("Sauce Labs Backpack");
         checkout.isItemInCheckoutOverviewPage("Sauce Labs Bike Light");
 
-        double totalPrice = checkout.getItemPrice("Sauce Labs Backpack") + checkout.getItemPrice("Sauce Labs Bike Light");
-        Assert.assertEquals(checkout.getItemTotal(),totalPrice,0.01,"computed total is " + totalPrice + " and expected total is " + checkout.getItemTotal());
+        double subtotalPrice = checkout.getItemPrice("Sauce Labs Backpack") + checkout.getItemPrice("Sauce Labs Bike Light");
+        double taxPrice = subtotalPrice * 0.08;
+        double totalPrice = subtotalPrice * 1.08;
+        Assert.assertEquals(checkout.getItemSubTotal(), subtotalPrice,0.01,"computed total is " + subtotalPrice + " and expected subtotal is " + checkout.getItemSubTotal());
+        Assert.assertEquals(checkout.getTax(),taxPrice,0.01,"computed tax is " + taxPrice + " and expected tax is " + checkout.getTax());
+        Assert.assertEquals(checkout.getItemTotal(), totalPrice,0.1,"computed total is " + totalPrice + " and expected total is " + checkout.getItemTotal());
         checkout.finishCheckout();
     }
 }
