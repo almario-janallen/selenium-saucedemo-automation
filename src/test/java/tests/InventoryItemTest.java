@@ -25,7 +25,7 @@ public class InventoryItemTest extends BaseTest {
     }
 
     @Test(dataProvider = "excelData")
-    public void inventoryItemTest(String inventoryItemName, double price, String description){
+    public void testVerifyItemDetails(String inventoryItemName, String priceStr, String description){
 
         inventoryPage = new InventoryPage(driver);
         inventoryPage.goToProduct(inventoryItemName);
@@ -38,6 +38,7 @@ public class InventoryItemTest extends BaseTest {
         Assert.assertEquals(inventoryItemPage.getInventoryItemDescription(),description,"Item description mismatch!");
 
         // ✅ Verify Price (Excel is numeric, webpage has "$xx.xx")
+        double price = Double.parseDouble(priceStr);
         String expectedPrice = new DecimalFormat("$#.00").format(price);  // e.g. $29.99
         Assert.assertEquals(inventoryItemPage.getInventoryItemPrice(),expectedPrice,"Item price mismatch!");
 

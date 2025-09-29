@@ -33,17 +33,22 @@ public class ExcelUtils {
         return data;
     }
 
-    private static Object cellToString(Cell cell) {
+    private static String cellToString(Cell cell) {
         if (cell == null) return "";
         switch (cell.getCellType()) {
             case STRING:
                 return cell.getStringCellValue();
             case BOOLEAN:
-                return cell.getBooleanCellValue();
+                return String.valueOf(cell.getBooleanCellValue());
             case NUMERIC:
-                return cell.getNumericCellValue();
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    return cell.getDateCellValue().toString();
+                } else {
+                    return String.valueOf(cell.getNumericCellValue());
+                }
             default:
                 return "";
         }
     }
+
 }

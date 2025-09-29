@@ -2,8 +2,10 @@ package tests;
 
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import utils.ScreenshotUtil;
 import utils.WebDriverFactory;
 import java.lang.reflect.Method;
 
@@ -14,7 +16,7 @@ public class BaseTest {
     public void setUp(Method method) {
         driver = WebDriverFactory.getDriver();
         driver.get("https://www.saucedemo.com/");
-        if(!method.getName().equals("testLoginScenariosFromExcel")){
+        if(!method.getName().equals("testLoginScenarios")){
             Cookie session = new Cookie.Builder("session-username", "standard_user")
                     .domain("www.saucedemo.com")
                     .path("/")
@@ -23,6 +25,7 @@ public class BaseTest {
                     .build();
 
             driver.manage().addCookie(session);
+            driver.navigate().refresh();
 
         }
 
@@ -31,7 +34,12 @@ public class BaseTest {
     }
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
+        // Capture screenshot first if test failed
+        if (result.getStatus() == ITestResult.FAILURE && driver != null) {
+            ScreenshotUtil.captureScreenshot(driver, result.getName(), "failure");
+        }
+
         if (driver != null) {
             driver.quit();
         }

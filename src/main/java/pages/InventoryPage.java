@@ -95,7 +95,7 @@ public class InventoryPage {
         if (badge.isEmpty()) {
             return 0; // No badge = empty cart
         }
-        return Integer.parseInt(badge.getFirst().getText().trim());
+        return Integer.parseInt(badge.get(0).getText().trim());
     }
 
     public void resetAppState() {

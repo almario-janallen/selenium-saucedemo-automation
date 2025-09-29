@@ -20,12 +20,14 @@ public class LoginTest extends BaseTest {
     }
 
     @Test(dataProvider = "excelData")
-    public void testLoginScenariosFromExcel(String username, String password, boolean isSuccess) {
+    public void testLoginScenarios(String username, String password, String isSuccessStr) {
         loginPage = new LoginPage(driver);
 
         loginPage.setUsername(username);
         loginPage.setPassword(password);
         loginPage.clickLoginButton();
+
+        boolean isSuccess = Boolean.parseBoolean(isSuccessStr);
 
         if(isSuccess) {
             Assert.assertTrue(driver.getCurrentUrl().contains("inventory.html"),"Expected to land on inventory page for user: " + username);

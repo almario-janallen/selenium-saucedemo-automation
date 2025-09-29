@@ -1,7 +1,6 @@
 package tests;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.annotations.Listeners;
@@ -11,7 +10,6 @@ import pages.LoginPage;
 import pages.InventoryPage;
 import utils.ExcelUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Listeners(TestListener.class)
@@ -26,14 +24,10 @@ public class InventoryTest extends BaseTest {
     }
 
     @Test(dataProvider = "excelData")
-    public void verifyInventory(String itemName, double price, String description) {
-
+    public void testVerifyInventoryList(String itemName, String price, String description) {
         inventoryPage = new InventoryPage(driver);
         List<String> itemsInInventory = inventoryPage.getInventoryItems(); //gets items in webpage
-
-        for(String item : itemsInInventory){
-            Assert.assertTrue(itemsInInventory.contains(itemName), "Expected item not found in inventory: " + item);
-        }
+        Assert.assertTrue(itemsInInventory.contains(itemName), "Expected item not found in inventory: " + itemName);
     }
 }
 

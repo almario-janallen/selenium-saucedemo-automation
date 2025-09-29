@@ -21,36 +21,42 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
-        // Create Extent test entry
         ExtentTest extentTest = extent.createTest(result.getMethod().getMethodName());
         test.set(extentTest);
 
         logger.info("🚀 STARTING TEST: " + result.getName());
-        test.get().log(Status.INFO, "Starting test: " + result.getName());
+        if (test.get() != null) {
+            test.get().log(Status.INFO, "Starting test: " + result.getName());
+        }
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
         logger.info("✅ PASSED: " + result.getName());
-        test.get().log(Status.PASS, "Test Passed");
-
-        captureScreenshot(result, "success");
+        if (test.get() != null) {
+            test.get().log(Status.PASS, "Test Passed");
+            attachScreenshotIfAvailable(result, "success");
+        }
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
         logger.error("❌ FAILED: " + result.getName(), result.getThrowable());
-        test.get().log(Status.FAIL, "Test Failed: " + result.getThrowable());
-
-        captureScreenshot(result, "failure");
+        if (test.get() != null) {
+            test.get().log(Status.FAIL, "Test Failed: " + result.getThrowable());
+            attachScreenshotIfAvailable(result, "failure");
+        } else {
+            logger.warn("⚠️ ExtentTest is null. Skipping logging for failed test: " + result.getName());
+        }
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
         logger.warn("⚠️ SKIPPED: " + result.getName());
-        test.get().log(Status.SKIP, "Test Skipped: " + result.getThrowable());
-
-        captureScreenshot(result, "skipped");
+        if (test.get() != null) {
+            test.get().log(Status.SKIP, "Test Skipped: " + result.getThrowable());
+            attachScreenshotIfAvailable(result, "skipped");
+        }
     }
 
     @Override
@@ -61,22 +67,27 @@ public class TestListener implements ITestListener {
     @Override
     public void onFinish(ITestContext context) {
         logger.info("=== Test Suite Finished: " + context.getName() + " ===");
-        extent.flush(); // Finalize Extent report
+        extent.flush();
     }
 
-    private void captureScreenshot(ITestResult result, String status) {
+    private void attachScreenshotIfAvailable(ITestResult result, String status) {
         Object testClass = result.getInstance();
-        WebDriver driver = ((BaseTest) testClass).getDriver();
-
-        if (driver != null) {
-            String screenshotPath = ScreenshotUtil.captureScreenshot(driver, result.getName(), status);
-            logger.info("📸 Screenshot saved at: " + screenshotPath);
-
-            // Attach screenshot to Extent report
-            try {
-                test.get().addScreenCaptureFromPath(screenshotPath);
-            } catch (Exception e) {
-                logger.error("⚠️ Could not attach screenshot to ExtentReport", e);
+        if (testClass instanceof BaseTest) {
+            WebDriver driver = ((BaseTest) testClass).getDriver();
+            if (driver != null) {
+                try {
+                    String path = ScreenshotUtil.captureScreenshot(driver, result.getName(), status);
+                    if (test.get() != null) {
+                        test.get().addScreenCaptureFromPath(path);
+                        logger.info("📸 Screenshot attached to report: " + path);
+                    }
+                } catch (org.openqa.selenium.NoSuchSessionException e) {
+                    logger.warn("⚠️ WebDriver session is gone. Cannot take screenshot: " + e.getMessage());
+                } catch (Exception e) {
+                    logger.error("⚠️ Failed to attach screenshot to report", e);
+                }
+            } else {
+                logger.warn("⚠️ WebDriver is null. Screenshot not taken for test: " + result.getName());
             }
         }
     }
